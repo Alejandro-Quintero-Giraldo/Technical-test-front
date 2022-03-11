@@ -1,5 +1,5 @@
 import firebaseApp from './firebaseInit';
-import 'firebase/auth'
+import 'firebase/compat/auth'
 
 export const auth = firebaseApp.auth();
 

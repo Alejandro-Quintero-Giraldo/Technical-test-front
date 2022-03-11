@@ -1,6 +1,6 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 
-firebase.initializeApp(
+export const app = firebase.initializeApp(
   {
     apiKey: "AIzaSyDteXReryMSqZuZmLoHKBk3M3ABnn8KjDw",
     authDomain: "technical-test-85514.firebaseapp.com",
@@ -9,6 +9,6 @@ firebase.initializeApp(
     messagingSenderId: "117557194835",
     appId: "1:117557194835:web:c67cf992148949e30556a6"
   }
-)
+);
 
 export default firebase;

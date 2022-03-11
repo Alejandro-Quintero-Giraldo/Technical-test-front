@@ -1,36 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Button } from "../components/Button";
 import { NavBar } from "../components/NavBar";
 import { http } from '../environments/AXIOS_CONFIG';
 import { urls } from '../environments/urls';
 import { getFromLocal, saveToLocal } from '../functions/localStorage';
+import { auth } from '../functions/firebaseAuth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 export const Home = () => {
     
     const history = useHistory();
-   // const [user] = useAuthState(auth);
-    const [user, setUser] = useState({});
+    const [user] = useAuthState(auth);
+    const [newUser, setNewUser] = useState({});
     const [action, setAction] = useState({});
     const [typeAction, setTypeAction] = useState();
     const [languaje, setLanguaje] = useState('ESPANOL');
     const [message, setMessage] = useState('');
-
-    useEffect(() => {
-        setUser({
-            id: "622a273c3a36a209edd6bf57",
-            userName: "Alejandro Quintero Giraldo",
-            email:"alejo@mail.com"
-        })
-        findUser();
-    }, [])
+    const [userName, setUserName] = useState('');
 
     const findUser = () => {
-        http.get(urls.findById("622a273c3a36a209edd6bf57"))
+        http.get(urls.findById(user?.uid))
             .then((res) => {
-                if (res.data) {
-                    saveToLocal('UID', "622a273c3a36a209edd6bf57");
-                    saveToLocal('PHOTO', "622a273c3a36a209edd6bf57");
+                if (res.data && res.status === 200) {
+                    saveToLocal('UID', user?.uid);
+                    saveToLocal('PHOTO', user?.photoURL);
                     history.push('/')
                 };
             }).catch((error) => {
@@ -40,11 +34,12 @@ export const Home = () => {
     }
 
     const createUser = () => {
-        http.post(urls.saveUser, {
+        setNewUser({
             id: user?.uid,
             userName: user?.displayName,
             email: user?.email
-        }).then((res) => {
+        })
+        http.post(urls.saveUser, newUser).then((res) => {
             if (res.status === 200) {
                 saveToLocal('UID', user?.uid);
                 saveToLocal('PHOTO', user?.photoURL);
@@ -55,25 +50,29 @@ export const Home = () => {
 
     const generateMessage = () => {
         setAction({
-           
-        })
-        http.get(urls.getMessage, {
             userId: getFromLocal('UID'),
-            userName: "Alejandro Quintero Giraldo",
-            languaje: languaje,
+            userName: userName,
             typeAction: typeAction,
-            message: ""
+            languaje: languaje
         })
-        .then((res) => {
+        console.log(typeAction, ' ', languaje, ' ', userName, ' ', getFromLocal('UID'), ' ', action)
+            http.get(urls.getMessage, action)
+            .then((res) => {
                 if(res.data){
                     setMessage(res.data);
                 }
-            })
+            });
     }
 
-    // if (user) {
-    //     findUser();
-    // }
+
+
+    if(typeAction !== undefined && typeAction !== null){
+        generateMessage();
+    }
+
+    if (user) {
+        findUser();
+    }
 
 
     return (
@@ -89,12 +88,15 @@ export const Home = () => {
                     <div className="card-body">
                         
                         <div className="container-button">
-                            <Button />
+                            { user ? (<Button action={'signout'} />) : (<Button action={'login'}/>) }
                         </div>
 
                         <div className="container-button">
                             <label htmlFor="name">Nombre: </label>
-                            <input type="text" id="name" name="name" required autoFocus />
+                            <input type="text" id="name" name="name" onChange={(e) => {
+                                e.preventDefault();
+                                setUserName(e.target.value)
+                            }} required autoFocus />
                         </div>
                         <div className="container-button">
                             <input type="radio" radioGroup="languaje" onChange={(e) => {
@@ -105,16 +107,16 @@ export const Home = () => {
 
                         <div className="container-button">
                             <button className="buttons" value="GREET" onClick={(e) => {
-                                    setTypeAction(e.target.value)
-                                    generateMessage();
+                                    setTypeAction(e.target.value);
+                                    console.log('Action active', typeAction);
                                 }}>Saludar</button>
                             <button className="buttons" value="NAME" onClick={(e) =>{
                                 setTypeAction(e.target.value);
-                                generateMessage();
+                                console.log('Action active', typeAction);
                             } }>Nombre</button>
                             <button className="buttons" value="GOODBYE" onClick={(e) => {
                                 setTypeAction(e.target.value);
-                                generateMessage();
+                                console.log('Action active', typeAction);
                             } }>Despedir</button>
                         </div>
                         <div className="container-button">

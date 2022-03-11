@@ -88,3 +88,14 @@ code {
   background: #fff;
   color: #57cc99
 }
+
+.image {
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 7%;
+}
+
+.username {
+  color: #fff;
+  margin: 0% 5% 5% 0%;
+}

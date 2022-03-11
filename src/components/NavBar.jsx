@@ -1,28 +1,27 @@
-import React, { useState } from "react";
-import { urls } from '../environments/urls';
-import { axios } from '../environments/AXIOS_CONFIG';
-import { saveToLocal } from '../functions/localStorage';
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-//import { useAuthState } from 'react-firebase-hooks/auth';
-//import  { auth } from "../functions/firebaseAuth";
+import React from "react";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import  { auth } from "../functions/firebaseAuth";
 
 
 export const NavBar = () => {
   
+    const [user] = useAuthState(auth);
+
+
     return (
         <>
             <nav className="navbar navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="#">Technical Test</a>
+                    <a className="navbar-brand">Technical Test</a>
 
                     <form className="d-flex">
-                        {/* {
-                            user ? <div>
-                                <p className="text text-info">{user?.displayName}</p>
-                                <img src={user?.photoURL} />
+                         {
+                            user ? <div className="d-flex justify-content-between text-center">
+                                <p className="username">{user?.displayName}</p>
+                                <img className="image" alt="FOTO-CUENTA" src={user?.photoURL} />
                             </div>
                                 : null
-                        } */}
+                        }
                     </form>
                 </div>
             </nav>
