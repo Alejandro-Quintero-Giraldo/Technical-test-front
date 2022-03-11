@@ -11,3 +11,80 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.css-button-fully-rounded--green {
+  text-align: center;
+  min-width: 130px;
+  height: 40px;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.7s ease;
+  border-radius: 20px;
+  border: 2px solid #57cc99;
+  background: #57cc99;
+
+
+}
+.css-button-fully-rounded--green:hover {
+  background: #fff;
+  color: #57cc99
+}
+
+
+.title {
+  color: #000000;
+  font-size: 24pt;
+  margin: 3% 0% 3% 0%;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container-button {
+  display: flex;
+  justify-content: center;
+  margin: 2.5% 0% 2.5% 0%;
+}
+
+.container-button label {
+  margin-right: 3%;
+  font-size: 16pt;
+}
+
+.container-button input[type="text"] {
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+
+.container-button input[type="radio"] {
+  margin: 0% 2% 0% 2%;
+  min-height: 30px;
+}
+
+.languaje {
+   font-size: 16pt;
+}
+
+.buttons {
+  text-align: center;
+  min-width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 20px;
+  border: 2px solid #57cc99;
+  background: #57cc99;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.7s ease;
+  margin: 0% 5% 0% 5%;
+}
+
+.buttons:hover {
+  background: #fff;
+  color: #57cc99
+}
