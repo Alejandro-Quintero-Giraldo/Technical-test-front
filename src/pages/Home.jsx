@@ -13,11 +13,11 @@ export const Home = () => {
     const history = useHistory();
     const [user] = useAuthState(auth);
     const [newUser, setNewUser] = useState({});
-    const [action, setAction] = useState({});
     const [typeAction, setTypeAction] = useState();
     const [languaje, setLanguaje] = useState('ESPANOL');
     const [message, setMessage] = useState('');
     const [userName, setUserName] = useState('');
+    const [countFind, setCountFind] = useState(0);
 
     const findUser = () => {
         http.get(urls.findById(user?.uid))
@@ -49,29 +49,29 @@ export const Home = () => {
     }
 
     const generateMessage = () => {
-        setAction({
-            userId: getFromLocal('UID'),
-            userName: userName,
-            typeAction: typeAction,
-            languaje: languaje
-        })
-        console.log(typeAction, ' ', languaje, ' ', userName, ' ', getFromLocal('UID'), ' ', action)
-            http.get(urls.getMessage, action)
+            console.log(typeAction, ' ', languaje, ' ', userName, ' ', getFromLocal('UID'),)
+            http.get(urls.getMessage(getFromLocal('UID'),userName,typeAction,languaje))
             .then((res) => {
-                if(res.data){
+                if(res.status === 200 && res.data){
+                    console.log('Pasa al log');
                     setMessage(res.data);
+                   
                 }
             });
     }
 
-
+    setTimeout(() => {
+        setCountFind(0);
+    }, 10000)
 
     if(typeAction !== undefined && typeAction !== null){
         generateMessage();
+       // setTypeAction(null);
     }
 
-    if (user) {
+    if (user && countFind === 0) {
         findUser();
+        setCountFind(countFind+1);
     }
 
 
@@ -108,15 +108,12 @@ export const Home = () => {
                         <div className="container-button">
                             <button className="buttons" value="GREET" onClick={(e) => {
                                     setTypeAction(e.target.value);
-                                    console.log('Action active', typeAction);
                                 }}>Saludar</button>
                             <button className="buttons" value="NAME" onClick={(e) =>{
                                 setTypeAction(e.target.value);
-                                console.log('Action active', typeAction);
                             } }>Nombre</button>
                             <button className="buttons" value="GOODBYE" onClick={(e) => {
                                 setTypeAction(e.target.value);
-                                console.log('Action active', typeAction);
                             } }>Despedir</button>
                         </div>
                         <div className="container-button">

@@ -12,7 +12,7 @@ export const NavBar = () => {
         <>
             <nav className="navbar navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <a className="navbar-brand">Technical Test</a>
+                    <p className="navbar-brand" >Technical Test</p>
 
                     <form className="d-flex">
                          {
